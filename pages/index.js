@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     'align-items': 'stretch',
     height: '85vh',
-    width:'100%'
+    width: '100%'
   },
   fab: {
     position: 'absolute',
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   groceriesDiv: {
-    flex:1,
+    flex: 1,
   }
 }))
 
@@ -34,20 +34,18 @@ export default function Main() {
   const classes = useStyles();
 
   return (
-    <>
     <main className={classes.main}>
-        <div>
-          <ShoppingLists />
-        </div>
-        <div className={classes.groceriesDiv}>
-          <Groceries/>
-        </div>
-        <Tooltip title="Add a product">
+      <div>
+        <ShoppingLists />
+      </div>
+      <div className={classes.groceriesDiv}>
+        <Groceries />
+      </div>
+      <Tooltip title="Add a product">
         <Fab color="primary" aria-label="edit" className={classes.fab}>
           <EditIcon />
-      </Fab>
+        </Fab>
       </Tooltip>
     </main>
-    </>
   )
 }
