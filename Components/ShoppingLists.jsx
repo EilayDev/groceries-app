@@ -1,11 +1,11 @@
-import React, { BreaksStrictMode } from 'react';
+import React, {useState} from 'react';
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { Popover, TextField, Tooltip, Typography } from '@material-ui/core';
-import PropTypes from 'prop-types';
+import {Tooltip} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     'margin-left': 'auto',
     'margin-right': 'auto',
-    'margin-top': 1,
-    'margin-bottom':6,
+    'margin-bottom': '10px',
     '&:hover': {
       'cursor': 'pointer !important'
     },
+    
   },
   ListField: {
     width:'100%',
@@ -29,23 +29,33 @@ const useStyles = makeStyles((theme) => ({
   },
   fullHeight: {
     height:'100%'
-  }  
+  },
 }));
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+
 
 export default function ShoppingLists() {
   const classes = useStyles();
-  const [selectedTab, setSelectedTab] = React.useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [lists, setLists] = useState([]);
 
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
+
+  const placeholdLists = [
+    {
+      label: "Test1",
+    },
+    {
+      label: "Test2"
+    }
+  ];
+  const handleAdd = (event) => {
+    setLists(prevData => {
+      return [...prevData, {label: "new"}]
+    })
+  }
 
   return (
     <div className={`${classes.selected} ${classes.fullHeight}`}>
@@ -55,15 +65,22 @@ export default function ShoppingLists() {
         value={selectedTab}
         onChange={handleChange}
         >
-          
-        <Tab label="Item One" {...a11yProps(0)}/>
-        <Tab label="Item Two"{...a11yProps(1)}/>
-        <Tab label="Item Three" {...a11yProps(2)}/>
+        {placeholdLists.map((list, index) => (
+          <Tab key={index} label={list.label}/>
+        ))}
+        
+        
+        {lists.map((list, index) => (
+            <Tab key={index} label={list.label}/>
+        ))}
+            
       </Tabs>
-      <Divider/>
       <Tooltip title="Add a list">
-      <AddCircleOutlineRoundedIcon className={classes.addIcon}/>
+        <AddCircleOutlineRoundedIcon className={classes.addIcon} onClick={handleAdd}/>
       </Tooltip>
+      <Divider/>
+      
+       
       </div>
       
       
