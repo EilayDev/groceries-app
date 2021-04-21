@@ -7,11 +7,15 @@ import Tab from '@material-ui/core/Tab';
 import { Tooltip } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
 
 const useStyles = makeStyles((theme) => ({
-  selected: {
+  rightBorder: {
     borderRight: `1px solid ${theme.palette.divider}`,
   },
   addIcon: {
@@ -32,6 +36,20 @@ const useStyles = makeStyles((theme) => ({
   fullHeight: {
     height: '100%'
   },
+  selected: {
+    '& span': {
+      'font-weight': 'bold'
+    }
+  },
+  space: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  }
+
 }));
 
 const placeholdLists = [
@@ -45,10 +63,11 @@ const placeholdLists = [
   }
 ];
 
-export default function ShoppingLists() {
+export default function ShoppingLists(props) {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
   const [lists, setLists] = useState(placeholdLists);
+  const isScreenLarge = useMediaQuery('(min-width:1250px)');
 
   const handleChange = (_event, newValue) => {
     setSelectedTab(newValue);
@@ -63,7 +82,7 @@ export default function ShoppingLists() {
 
   const handleDelList = (event) => {
     event.stopPropagation();
-    if(lists.length==1){return}
+    if (lists.length == 1) { return }
     setLists((prevData) => (
       prevData.filter((_e, i) => i != selectedTab)))
     if (selectedTab == lists.length - 1) {
@@ -71,9 +90,6 @@ export default function ShoppingLists() {
       tabs[tabs.length - 2].click();
     }
   }
-
-
-
   const CustomAdd = () => {
     return (
       <>
@@ -87,29 +103,40 @@ export default function ShoppingLists() {
 
   const TabWrapper = React.forwardRef((props, ref) => {
     return (
-      <ButtonBase ref={ref} {...props}> {props.children} {props.className.includes("Mui-selected") && <CloseIcon onClick={handleDelList} />} </ButtonBase >
+      <ButtonBase ref={ref} {...props}> {props.children} {props['aria-selected'] && <CloseIcon onClick={handleDelList} />} </ButtonBase >
     )
   })
 
+  const closeDrawerHandler = () => {
+    props.setDrawerState(false)
+  }
 
   return (
-    <div className={`${classes.selected} ${classes.fullHeight}`}>
-      <Tabs
-        orientation="vertical"
-        value={selectedTab}
-        onChange={handleChange}
-      >
-        {lists.map((list, index) => (
-          <Tab key={index} label={list.label} component={TabWrapper} />
-        ))}
-        <CustomAdd />
-      </Tabs>
+    <Drawer
+      variant={isScreenLarge ? "permanent" : "persistent"}
+      anchor="left"
+      open={props.drawerState}
+    >
+      <div className={`${classes.space}`} />
+      {!isScreenLarge &&
+        <IconButton onClick={closeDrawerHandler}>
+          <ChevronLeftIcon />
+        </IconButton>
+      }
 
+      <div className={`${classes.rightBorder} ${classes.fullHeight}`}>
+        <Tabs
+          orientation="vertical"
+          value={selectedTab}
+          onChange={handleChange}
+        >
+          {lists.map((list, index) => (
+            <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
+          ))}
+          <CustomAdd />
+        </Tabs>
+      </div>
 
-
-
-    </div>
-
-
+    </Drawer>
   );
 }

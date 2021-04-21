@@ -30,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Main() {
+export default function Main(props) {
   const classes = useStyles();
 
   return (
     <main className={classes.main}>
       <div>
-        <ShoppingLists />
+        <ShoppingLists {...props} />
       </div>
       <div className={classes.groceriesDiv}>
         <Groceries />

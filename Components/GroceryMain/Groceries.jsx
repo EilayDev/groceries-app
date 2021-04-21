@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Container } from '@material-ui/core';
-import TabScrollButton from '@material-ui/core/TabScrollButton';
 
 function GroceryItem(props) {
     const classes = useStyles();
@@ -16,16 +15,15 @@ function GroceryItem(props) {
     }
     return (
         <div className={classes.product}>
-            
+
             <form>
-            <Checkbox
-                checked={isChecked}
-                color="primary"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                onClick={handleChange}
-                className={classes.checkbox}
-            />
-                <TextField id={props.id} className={classes.inputField} label="Item" variant="outlined" defaultValue={props.name} /> x 
+                <Checkbox
+                    checked={isChecked}
+                    color="primary"
+                    onClick={handleChange}
+                    className={classes.checkbox}
+                />
+                <TextField id={props.id} className={classes.inputField} label="Item" variant="outlined" defaultValue={props.name} /> <span> x </span>
                 <TextField id={props.id} className={classes.amountField} label="Amount" variant="outlined" defaultValue={props.amount} />
             </form>
         </div>
@@ -34,10 +32,10 @@ function GroceryItem(props) {
 
 const useStyles = makeStyles((theme) => ({
     fullHeight: {
-        'height':'100%'
+        'height': '100%'
     },
     product: {
-
+        'text-align': 'center',
         'margin-bottom': 20,
     },
     checkbox: {
@@ -55,19 +53,19 @@ const useStyles = makeStyles((theme) => ({
     }
     ,
     scrollable: {
-        'max-height':'100%',
-        'overflow':'auto'
+        'max-height': '100%',
+        'overflow': 'auto'
     }
 }));
 
 export default function Groceries() {
     const classes = useStyles();
-    
+
     return (
         <Grid
             container
             className={classes.fullHeight}
-            >
+        >
             <Grid item sm={6} className={classes.scrollable}>
                 <Container className={`${classes.fullHeight} ${classes.container}`}>
                     <GroceryItem id="r2" name="Tuna" amount="5" />
@@ -88,11 +86,11 @@ export default function Groceries() {
                     <GroceryItem id="r1" name="Eggs" amount="6" />
 
                 </Container>
-                
+
             </Grid>
             <Grid item sm={6}>
-                <Container className={`${classes.fullHeight} ${classes.container}`}>   
-                    <Paper className={classes.fullHeight}>             
+                <Container className={`${classes.fullHeight} ${classes.container}`}>
+                    <Paper className={classes.fullHeight}>
                         <Typography variant="h4"> Basket </Typography>
                     </Paper>
                 </Container>
