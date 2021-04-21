@@ -16,7 +16,7 @@ export default function Header(props) {
         }
     }))
     const handleDrawer = () => {
-        props.setDrawerState(true)
+        props.setDrawerState((value) => !value)
     }
     const classes = useStyles();
     return(

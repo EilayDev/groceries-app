@@ -11,6 +11,7 @@ import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 
 
@@ -48,6 +49,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
+  },
+  drawer: {
+    [theme.breakpoints.down('lg')]:{
+      width:'40%'
+    },
+    [theme.breakpoints.up('lg')]:{
+      width: '10%'
+    }
   }
 
 }));
@@ -63,17 +72,17 @@ const placeholdLists = [
   }
 ];
 
+
+
 export default function ShoppingLists(props) {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
   const [lists, setLists] = useState(placeholdLists);
-  const isScreenLarge = useMediaQuery('(min-width:1250px)');
+  const isScreenLarge = useMediaQuery('(min-width:1280px)');
 
   const handleChange = (_event, newValue) => {
     setSelectedTab(newValue);
   };
-
-
   const handleAdd = (_event) => {
     setLists(prevData => {
       return [...prevData, { label: "new", id: prevData.length }]
@@ -101,6 +110,13 @@ export default function ShoppingLists(props) {
     )
   }
 
+  const handleSwipeClose = () => {
+    props.setDrawerState(false)
+  }
+  const handleSwipeOpen = () => {
+    props.setDrawerState(true)
+  }
+
   const TabWrapper = React.forwardRef((props, ref) => {
     return (
       <ButtonBase ref={ref} {...props}> {props.children} {props['aria-selected'] && <CloseIcon onClick={handleDelList} />} </ButtonBase >
@@ -110,12 +126,35 @@ export default function ShoppingLists(props) {
   const closeDrawerHandler = () => {
     props.setDrawerState(false)
   }
+  
+  const CustomDrawer = (props) => {
+    if (isScreenLarge) {
+      return (
+        <Drawer {...props}>
+          {props.children}
+        </Drawer>
+      )
+    }
+    else {
+      return (
+        <SwipeableDrawer {...props}>
+          {props.children}
+        </SwipeableDrawer>
+      )
+    }
+  }
 
   return (
-    <Drawer
-      variant={isScreenLarge ? "permanent" : "persistent"}
+    <CustomDrawer
+    {...(isScreenLarge ? {variant:'permanent'} : {onOpen:handleSwipeOpen,
+    onClose:handleSwipeClose})}
+      
       anchor="left"
       open={props.drawerState}
+      classes={{
+        paper: classes.drawer
+      }}
+      
     >
       <div className={`${classes.space}`} />
       {!isScreenLarge &&
@@ -137,6 +176,6 @@ export default function ShoppingLists(props) {
         </Tabs>
       </div>
 
-    </Drawer>
+    </CustomDrawer>
   );
 }

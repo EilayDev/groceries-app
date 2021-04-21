@@ -15,7 +15,6 @@ function GroceryItem(props) {
     }
     return (
         <div className={classes.product}>
-
             <form>
                 <Checkbox
                     checked={isChecked}
@@ -66,7 +65,7 @@ export default function Groceries() {
             container
             className={classes.fullHeight}
         >
-            <Grid item sm={6} className={classes.scrollable}>
+            <Grid item sm={12} className={classes.scrollable}>
                 <Container className={`${classes.fullHeight} ${classes.container}`}>
                     <GroceryItem id="r2" name="Tuna" amount="5" />
                     <GroceryItem id="r1" name="Eggs" amount="6" />
@@ -84,16 +83,8 @@ export default function Groceries() {
                     <GroceryItem id="r1" name="Eggs" amount="6" />
                     <GroceryItem id="r2" name="Tuna" amount="5" />
                     <GroceryItem id="r1" name="Eggs" amount="6" />
-
                 </Container>
 
-            </Grid>
-            <Grid item sm={6}>
-                <Container className={`${classes.fullHeight} ${classes.container}`}>
-                    <Paper className={classes.fullHeight}>
-                        <Typography variant="h4"> Basket </Typography>
-                    </Paper>
-                </Container>
             </Grid>
         </Grid>
     )
