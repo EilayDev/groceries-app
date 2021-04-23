@@ -11,6 +11,10 @@ export default class MyDocument extends Document {
             <Html lang="en">
                 <Head>
                     <meta name="theme-color" content={theme.palette.primary.main} />
+                    <meta charSet="utf-8" />
+                    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+                    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+                    <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
                 </Head>
                 <body>

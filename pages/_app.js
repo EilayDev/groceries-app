@@ -36,11 +36,6 @@ export default function MyApp(props) {
   return(
     <React.Fragment>
     <Head>
-      <meta charSet="utf-8" />
-      <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-      <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-      <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      
       <title>Grocery App</title>
     </Head>
     <ThemeProvider theme={theme} >

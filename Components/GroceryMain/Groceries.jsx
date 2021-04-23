@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
+import {TextField, Checkbox, Paper, Container, FormGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { Container } from '@material-ui/core';
-import FormGroup from '@material-ui/core/FormGroup';
 
 function GroceryItem(props) {
     const classes = useStyles();

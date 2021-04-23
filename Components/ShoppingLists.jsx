@@ -1,19 +1,9 @@
-import React, { useState, useEffect, preventDefault } from 'react';
-import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
-import Divider from '@material-ui/core/Divider';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { Tooltip } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
+import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-
-
+import CloseIcon from '@material-ui/icons/Close';
+import { SwipeableDrawer, useMediaQuery, IconButton, Drawer, ButtonBase, Tooltip, Tab, Tabs, Divider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   rightBorder: {
@@ -23,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       'cursor': 'pointer !important'
     },
-
   },
   ListField: {
     width: '100%',
@@ -36,14 +25,6 @@ const useStyles = makeStyles((theme) => ({
     '& span': {
       'font-weight': 'bold'
     }
-  },
-  space: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
   },
   drawerPaper: {
     width: '15em',
@@ -62,8 +43,6 @@ const placeholdLists = [
     id: 1
   }
 ];
-
-
 
 export default function ShoppingLists(props) {
   const classes = useStyles();
@@ -93,22 +72,22 @@ export default function ShoppingLists(props) {
   const CustomAdd = () => {
     return (
       <>
-      <IconButton color="inherit" onClick={handleAdd}>
-        <Tooltip title="Add a list">
-          <AddCircleOutlineRoundedIcon className={classes.addIcon}/>
-        </Tooltip>
-      </IconButton>
-      
-      <Divider />
-        </>
+        <IconButton color="inherit" onClick={handleAdd}>
+          <Tooltip title="Add a list">
+            <AddCircleOutlineRoundedIcon className={classes.addIcon} />
+          </Tooltip>
+        </IconButton>
+
+        <Divider />
+      </>
     )
   }
 
-  const handleSwipeClose = () => {
-    props.setDrawerState(false)
-  }
-  const handleSwipeOpen = () => {
+  const openDrawerHandler = () => {
     props.setDrawerState(true)
+  }
+  const closeDrawerHandler = () => {
+    props.setDrawerState(false)
   }
 
   const TabWrapper = React.forwardRef((props, ref) => {
@@ -117,10 +96,6 @@ export default function ShoppingLists(props) {
     )
   })
 
-  const closeDrawerHandler = () => {
-    props.setDrawerState(false)
-  }
-  
   const CustomDrawer = (props) => {
     if (isScreenLarge) {
       return (
@@ -129,34 +104,33 @@ export default function ShoppingLists(props) {
         </Drawer>
       )
     }
-    else {
-      return (
-        <SwipeableDrawer {...props}>
-          {props.children}
-        </SwipeableDrawer>
-      )
-    }
+    return (
+      <SwipeableDrawer {...props}>
+        {props.children}
+      </SwipeableDrawer>
+    )
   }
 
   return (
     <CustomDrawer
-    {...(isScreenLarge ? {variant:'permanent'} : {onOpen:handleSwipeOpen,
-    onClose:handleSwipeClose})}
-      
+      {...(isScreenLarge ? { variant: 'permanent' } : {
+        onOpen: openDrawerHandler,
+        onClose: closeDrawerHandler
+      })}
+
       anchor="left"
       open={props.drawerState}
       className={classes.fullHeight}
       classes={{
         paper: classes.drawerPaper
       }}
-      
     >
       {!isScreenLarge &&
-      <div>
-        <IconButton onClick={closeDrawerHandler}>
-          <ChevronLeftIcon />
-        </IconButton>
-        <Divider/>
+        <div>
+          <IconButton onClick={closeDrawerHandler}>
+            <ChevronLeftIcon />
+          </IconButton>
+          <Divider />
         </div>
       }
 
@@ -171,10 +145,7 @@ export default function ShoppingLists(props) {
           ))}
           <CustomAdd />
         </Tabs>
-        
-        
       </div>
-
     </CustomDrawer>
   );
 }

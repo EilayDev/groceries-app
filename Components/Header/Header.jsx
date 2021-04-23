@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Header(props) {
     
     const handleDrawer = () => {
-        props.setDrawerState((value) => !value)
+        props.setDrawerState(true)
     }
     const classes = useStyles();
     return(
