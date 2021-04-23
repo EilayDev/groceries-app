@@ -3,18 +3,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-
+const useStyles = makeStyles((theme) => ({
+    white: ({
+        color: 'white'
+    }),
+    zindex: {
+        'z-index': theme.zIndex.drawer + 1,
+        'position': 'relative'
+    }
+}))
 
 export default function Header(props) {
-    const useStyles = makeStyles((theme) => ({
-        white: ({
-            color: 'white'
-        }),
-        zindex: {
-            'z-index': theme.zIndex.drawer + 1,
-            'position': 'relative'
-        }
-    }))
+    
     const handleDrawer = () => {
         props.setDrawerState((value) => !value)
     }

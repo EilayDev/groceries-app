@@ -38,13 +38,6 @@ code {
   background: grey; 
 }
 
-$black: #363839;
-$lightgray: #9c9e9f;
-$gray: #bdc1c6;
-$white: #fff;
-$green: #06842c;
-
-
 .passOver:after { 
   position: absolute;
    left: 0; 
@@ -56,7 +49,7 @@ $green: #06842c;
    display: block; 
   opacity: 50%;
    border-style: solid;
-   border-color: $white;
+   border-color: #fff;
    border-width: 0 2px 2px 0;
    border-radius:5px;
   }

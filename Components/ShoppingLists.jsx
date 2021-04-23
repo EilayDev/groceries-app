@@ -20,11 +20,6 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
   },
   addIcon: {
-    width: 'unset',
-    display: 'block',
-    'margin-left': 'auto',
-    'margin-right': 'auto',
-    'margin-bottom': '10px',
     '&:hover': {
       'cursor': 'pointer !important'
     },
@@ -50,13 +45,9 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
-  drawer: {
-    [theme.breakpoints.down('lg')]:{
-      width:'40%'
-    },
-    [theme.breakpoints.up('lg')]:{
-      width: '10%'
-    }
+  drawerPaper: {
+    width: '15em',
+    position: 'static',
   }
 
 }));
@@ -78,7 +69,7 @@ export default function ShoppingLists(props) {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
   const [lists, setLists] = useState(placeholdLists);
-  const isScreenLarge = useMediaQuery('(min-width:1280px)');
+  const isScreenLarge = useMediaQuery('(min-width:600px)');
 
   const handleChange = (_event, newValue) => {
     setSelectedTab(newValue);
@@ -102,11 +93,14 @@ export default function ShoppingLists(props) {
   const CustomAdd = () => {
     return (
       <>
+      <IconButton color="inherit" onClick={handleAdd}>
         <Tooltip title="Add a list">
-          <AddCircleOutlineRoundedIcon className={classes.addIcon} onClick={handleAdd} />
+          <AddCircleOutlineRoundedIcon className={classes.addIcon}/>
         </Tooltip>
-        <Divider />
-      </>
+      </IconButton>
+      
+      <Divider />
+        </>
     )
   }
 
@@ -151,16 +145,19 @@ export default function ShoppingLists(props) {
       
       anchor="left"
       open={props.drawerState}
+      className={classes.fullHeight}
       classes={{
-        paper: classes.drawer
+        paper: classes.drawerPaper
       }}
       
     >
-      <div className={`${classes.space}`} />
       {!isScreenLarge &&
+      <div>
         <IconButton onClick={closeDrawerHandler}>
           <ChevronLeftIcon />
         </IconButton>
+        <Divider/>
+        </div>
       }
 
       <div className={`${classes.rightBorder} ${classes.fullHeight}`}>
@@ -174,6 +171,8 @@ export default function ShoppingLists(props) {
           ))}
           <CustomAdd />
         </Tabs>
+        
+        
       </div>
 
     </CustomDrawer>

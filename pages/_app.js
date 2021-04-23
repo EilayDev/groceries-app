@@ -1,9 +1,11 @@
-import '../styles/globals.scss'
+import '../styles/globals.css'
 import React, {useState} from 'react';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../Components/theme'
+import Head from 'next/head';
+
 
 import Header from '../Components/Header/Header'
 import Footer from '../Components/Footer/Footer'
@@ -12,14 +14,6 @@ import Footer from '../Components/Footer/Footer'
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
-  const [drawerState, setDrawerState] = useState(false);
-  
-  function a11yProps(){
-    return {
-      setDrawerState:setDrawerState,
-      drawerState:drawerState
-    }
-  } 
   
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -28,13 +22,34 @@ export default function MyApp(props) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+  
+
+  const [drawerState, setDrawerState] = useState(false);
+  function a11yProps(){
+    return {
+      setDrawerState:setDrawerState,
+      drawerState:drawerState
+    }
+  } 
+  
+  
   return(
+    <React.Fragment>
+    <Head>
+      <meta charSet="utf-8" />
+      <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+      <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+      <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+      
+      <title>Grocery App</title>
+    </Head>
     <ThemeProvider theme={theme} >
       <CssBaseline />
       <Header {...a11yProps()} />
       <Component {...pageProps} {...a11yProps()} />
       <Footer />
   </ThemeProvider>
+  </React.Fragment>
     ) 
 }
 
