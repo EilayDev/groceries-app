@@ -96,56 +96,61 @@ export default function ShoppingLists(props) {
     )
   })
 
-  const CustomDrawer = (props) => {
-    if (isScreenLarge) {
-      return (
-        <Drawer {...props}>
-          {props.children}
-        </Drawer>
-      )
-    }
-    return (
-      <SwipeableDrawer {...props}>
-        {props.children}
-      </SwipeableDrawer>
-    )
-  }
-
   return (
-    <CustomDrawer
-      {...(isScreenLarge ? { variant: 'permanent' } : {
-        onOpen: openDrawerHandler,
-        onClose: closeDrawerHandler
-      })}
-
-      anchor="left"
-      open={props.drawerState}
-      className={classes.fullHeight}
-      classes={{
-        paper: classes.drawerPaper
-      }}
-    >
-      {!isScreenLarge &&
-        <div>
-          <IconButton onClick={closeDrawerHandler}>
-            <ChevronLeftIcon />
-          </IconButton>
-          <Divider />
-        </div>
-      }
-
-      <div className={`${classes.rightBorder} ${classes.fullHeight}`}>
-        <Tabs
-          orientation="vertical"
-          value={selectedTab}
-          onChange={handleChange}
+    <div>
+      { isScreenLarge ?
+        <Drawer
+          variant='permanent'
+          anchor="left"
+          className={classes.fullHeight}
+          classes={{
+            paper: classes.drawerPaper
+          }}
         >
-          {lists.map((list, index) => (
-            <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
-          ))}
-          <CustomAdd />
-        </Tabs>
-      </div>
-    </CustomDrawer>
+          <div className={`${classes.rightBorder} ${classes.fullHeight}`}>
+            <Tabs
+              orientation="vertical"
+              value={selectedTab}
+              onChange={handleChange}
+            >
+              {lists.map((list, index) => (
+                <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
+              ))}
+              <CustomAdd />
+            </Tabs>
+          </div>
+        </Drawer>
+        :
+        <SwipeableDrawer
+          onOpen={openDrawerHandler}
+          onClose={closeDrawerHandler}
+          anchor="left"
+          open={props.drawerState}
+          className={classes.fullHeight}
+          classes={{
+            paper: classes.drawerPaper
+          }}
+        >
+          <div>
+            <IconButton onClick={closeDrawerHandler}>
+              <ChevronLeftIcon />
+            </IconButton>
+            <Divider />
+          </div>
+          <div className={`${classes.rightBorder} ${classes.fullHeight}`}>
+            <Tabs
+              orientation="vertical"
+              value={selectedTab}
+              onChange={handleChange}
+            >
+              {lists.map((list, index) => (
+                <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
+              ))}
+              <CustomAdd />
+            </Tabs>
+          </div>
+        </SwipeableDrawer>
+      }
+    </div>
   );
 }
