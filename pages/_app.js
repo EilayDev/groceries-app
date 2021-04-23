@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import React, {useState} from 'react';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../Components/theme'

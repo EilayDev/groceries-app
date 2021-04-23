@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Add';
 import Groceries from '../Components/GroceryMain/Groceries'
-import ShoppingLists from "../Components/ShoppingLists";
+import ShoppingLists from "../Components/DrawerAndLists/ShoppingLists";
 import Tooltip from '@material-ui/core/Tooltip';
 
 

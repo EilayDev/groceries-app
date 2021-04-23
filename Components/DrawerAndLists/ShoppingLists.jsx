@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import CloseIcon from '@material-ui/icons/Close';
-import { SwipeableDrawer, useMediaQuery, IconButton, Drawer, ButtonBase, Tooltip, Tab, Tabs, Divider } from '@material-ui/core';
+import { SwipeableDrawer, useMediaQuery, Drawer, IconButton, ButtonBase, Tab, Tabs, Divider } from '@material-ui/core';
+import CustomAdd from './CustomAdd';
 
 const useStyles = makeStyles((theme) => ({
   rightBorder: {
     borderRight: `1px solid ${theme.palette.divider}`,
-  },
-  addIcon: {
-    '&:hover': {
-      'cursor': 'pointer !important'
-    },
   },
   ListField: {
     width: '100%',
@@ -30,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     width: '15em',
     position: 'static',
   }
-
 }));
 
 const placeholdLists = [
@@ -53,51 +47,30 @@ export default function ShoppingLists(props) {
   const handleChange = (_event, newValue) => {
     setSelectedTab(newValue);
   };
-  const handleAdd = (_event) => {
-    setLists(prevData => {
-      return [...prevData, { label: "new", id: prevData.length }]
-    })
-  }
-
-  const handleDelList = (event) => {
-    event.stopPropagation();
-    if (lists.length == 1) { return }
-    setLists((prevData) => (
-      prevData.filter((_e, i) => i != selectedTab)))
-    if (selectedTab == lists.length - 1) {
-      let tabs = document.getElementsByClassName("MuiTab-textColorInherit");
-      tabs[tabs.length - 2].click();
-    }
-  }
-  const CustomAdd = () => {
-    return (
-      <>
-        <IconButton color="inherit" onClick={handleAdd}>
-          <Tooltip title="Add a list">
-            <AddCircleOutlineRoundedIcon className={classes.addIcon} />
-          </Tooltip>
-        </IconButton>
-
-        <Divider />
-      </>
-    )
-  }
-
   const openDrawerHandler = () => {
     props.setDrawerState(true)
   }
   const closeDrawerHandler = () => {
     props.setDrawerState(false)
   }
-
+  
   const TabWrapper = React.forwardRef((props, ref) => {
+    const handleDelList = (event) => {
+      event.stopPropagation();
+      if (lists.length == 1) { return }
+      setLists((prevData) => (
+        prevData.filter((_e, i) => i != selectedTab)))
+      if (selectedTab == lists.length - 1) {
+        let tabs = document.getElementsByClassName("MuiTab-textColorInherit");
+        tabs[tabs.length - 2].click();
+      }
+    }
     return (
       <ButtonBase ref={ref} {...props}> {props.children} {props['aria-selected'] && <CloseIcon onClick={handleDelList} />} </ButtonBase >
     )
   })
-
   return (
-    <div>
+    <>
       { isScreenLarge ?
         <Drawer
           variant='permanent'
@@ -116,7 +89,7 @@ export default function ShoppingLists(props) {
               {lists.map((list, index) => (
                 <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
               ))}
-              <CustomAdd />
+              <CustomAdd setLists={setLists}/>
             </Tabs>
           </div>
         </Drawer>
@@ -151,6 +124,6 @@ export default function ShoppingLists(props) {
           </div>
         </SwipeableDrawer>
       }
-    </div>
+    </>
   );
 }
