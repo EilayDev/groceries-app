@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Container } from '@material-ui/core';
+import FormGroup from '@material-ui/core/FormGroup';
 
 function GroceryItem(props) {
     const classes = useStyles();
@@ -15,16 +16,15 @@ function GroceryItem(props) {
     }
     return (
         <div className={classes.product}>
-            <form>
+            <FormGroup row={true} className={`${classes.formField}`}>
+                <TextField className={classes.inputField} disabled={isChecked} label="Item" variant="outlined" defaultValue={props.name} /> <div className={classes.multiply}><span> X </span></div>
+                <TextField className={classes.amountField} disabled={isChecked} label="Amount" variant="outlined" defaultValue={props.amount} />
                 <Checkbox
                     checked={isChecked}
                     color="primary"
                     onClick={handleChange}
-                    className={classes.checkbox}
                 />
-                <TextField id={props.id} className={classes.inputField} label="Item" variant="outlined" defaultValue={props.name} /> <span> x </span>
-                <TextField id={props.id} className={classes.amountField} label="Amount" variant="outlined" defaultValue={props.amount} />
-            </form>
+            </FormGroup>
         </div>
     )
 }
@@ -34,26 +34,30 @@ const useStyles = makeStyles((theme) => ({
         'height': '100%'
     },
     product: {
-        'text-align': 'center',
-        'margin-bottom': 20,
+        'margin-top': 25,
+        'margin-bottom': 25,
     },
-    checkbox: {
-        'margin-top': 7
+    multiply: {
+        'margin-left':8,
+        'margin-right': 8,
     },
     container: {
-        'margin-top': '2vh',
-        'margin-bottom': '2vh',
+        'padding-top': '2%',
+        'padding-bottom': '2%'
     },
     inputField: {
         'width': '20ch'
     },
     amountField: {
         'width': '9ch'
-    }
-    ,
+    },
     scrollable: {
-        'max-height': '100%',
+        'height': '100%',
         'overflow': 'auto'
+    },
+    formField: {
+        'justifyContent': 'center',
+        'alignItems': 'center'
     }
 }));
 
@@ -61,31 +65,27 @@ export default function Groceries() {
     const classes = useStyles();
 
     return (
-        <Grid
-            container
-            className={classes.fullHeight}
-        >
-            <Grid item sm={12} className={classes.scrollable}>
-                <Container className={`${classes.fullHeight} ${classes.container}`}>
-                    <GroceryItem id="r2" name="Tuna" amount="5" />
-                    <GroceryItem id="r1" name="Eggs" amount="6" />
-                    <GroceryItem id="r2" name="Tuna" amount="5" />
-                    <GroceryItem id="r1" name="Eggs" amount="6" />
-                    <GroceryItem id="r2" name="Tuna" amount="5" />
-                    <GroceryItem id="r1" name="Eggs" amount="6" />
-                    <GroceryItem id="r2" name="Tuna" amount="5" />
-                    <GroceryItem id="r1" name="Eggs" amount="6" />
-                    <GroceryItem id="r2" name="Tuna" amount="5" />
-                    <GroceryItem id="r1" name="Eggs" amount="6" />
-                    <GroceryItem id="r2" name="Tuna" amount="5" />
-                    <GroceryItem id="r1" name="Eggs" amount="6" />
-                    <GroceryItem id="r2" name="Tuna" amount="5" />
-                    <GroceryItem id="r1" name="Eggs" amount="6" />
-                    <GroceryItem id="r2" name="Tuna" amount="5" />
-                    <GroceryItem id="r1" name="Eggs" amount="6" />
-                </Container>
+        <Container className={`${classes.container} ${classes.fullHeight} `}>
+            <Paper className={`${classes.scrollable}`}>
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+                <GroceryItem id="r1" name="Eggs" amount="6" />
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+                <GroceryItem id="r1" name="Eggs" amount="6" />
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+                <GroceryItem id="r1" name="Eggs" amount="6" />
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+                <GroceryItem id="r1" name="Eggs" amount="6" />
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+                <GroceryItem id="r1" name="Eggs" amount="6" />
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+                <GroceryItem id="r1" name="Eggs" amount="6" />
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+                <GroceryItem id="r1" name="Eggs" amount="6" />
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+                <GroceryItem id="r1" name="Eggs" amount="6" />
+                <GroceryItem id="r2" name="Tuna" amount="5" />
+        </Paper>
+        </Container>
 
-            </Grid>
-        </Grid>
     )
 }
