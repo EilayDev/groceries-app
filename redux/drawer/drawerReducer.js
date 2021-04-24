@@ -7,9 +7,11 @@ export const slice = createSlice({
         selectedTab: 0,
         lists: [
             {
-                label: "Default",
-                id: 0
-              },
+                label: "Default"
+            },
+            {
+                label: "AnotherOne"
+            },
         ]
     },
     reducers: {

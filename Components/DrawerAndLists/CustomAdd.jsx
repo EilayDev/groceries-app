@@ -20,7 +20,7 @@ export function CustomAdd() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const handleAdd = (_event) => {
-    dispatch(addToLists({ label: "new", id: 1 }))
+    dispatch(addToLists({ label: "new" }))
   }
   return (
       <>

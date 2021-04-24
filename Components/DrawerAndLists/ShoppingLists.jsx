@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { SwipeableDrawer, useMediaQuery, Drawer, IconButton, ButtonBase, Tab, Tabs, Divider } from '@material-ui/core';
 import CustomAdd from './CustomAdd';
 import { useSelector, useDispatch } from 'react-redux'
-import {openDrawer, closeDrawer, selectorIsOpen, removeSelectedTab, setSelectedTab, selectorGetLists, selectorGetSelectedTab} from '../../redux/drawer/drawerReducer'
+import {openDrawer, closeDrawer, selectorIsOpen, setSelectedTab, removeSelectedTab, selectorGetLists, selectorGetSelectedTab} from '../../redux/drawer/drawerReducer'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,17 +30,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const placeholdLists = [
-  {
-    label: "Default",
-    id: 0
-  },
-  {
-    label: "Test2",
-    id: 1
-  }
-];
-
 export default function ShoppingLists(props) {
   const classes = useStyles();
   const isScreenLarge = useMediaQuery('(min-width:600px)');
@@ -53,7 +42,7 @@ export default function ShoppingLists(props) {
 
 
   const handleChange = (_event, newValue) => {
-    dispatch(setSelectedTab(Number(newValue)))
+    dispatch(setSelectedTab(newValue))
   };
   const openDrawerHandler = () => {
     dispatch(openDrawer())
@@ -90,10 +79,10 @@ export default function ShoppingLists(props) {
           <div className={`${classes.rightBorder} ${classes.fullHeight}`}>
             <Tabs
               orientation="vertical"
-              value={selectedTab}
+              value={getSelectedTab}
               onChange={handleChange}
             >
-              {lists.map((list, index) => (
+              {getLists.map((list, index) => (
                 <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
               ))}
               <CustomAdd/>
