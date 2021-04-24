@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import {TextField, Checkbox, Paper, Container, FormGroup } from '@material-ui/core';
+import {TextField, Checkbox, Paper, Container, FormGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useSelector, useDispatch } from 'react-redux';
 
 function GroceryItem(props) {
     const classes = useStyles();
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         'margin-right': 8,
     },
     container: {
-        'padding-top': '2%',
+        'padding-top': '1%',
         'padding-bottom': '2%'
     },
     inputField: {
@@ -52,14 +53,22 @@ const useStyles = makeStyles((theme) => ({
     formField: {
         'justifyContent': 'center',
         'alignItems': 'center'
+    },
+    listName: {
+        'text-align':'center',
+        'margin-bottom': "1%",
+        color:'#0E1111'
     }
 }));
 
 export default function Groceries() {
     const classes = useStyles();
-
+    
     return (
         <Container className={`${classes.container} ${classes.fullHeight} `}>
+            <Typography variant="h4" className={classes.listName}>
+                TEST2 List
+            </Typography>
             <Paper className={`${classes.scrollable}`}>
                 <GroceryItem id="r2" name="Tuna" amount="5" />
                 <GroceryItem id="r1" name="Eggs" amount="6" />

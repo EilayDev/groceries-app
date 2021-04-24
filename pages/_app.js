@@ -1,16 +1,12 @@
 import '../styles/globals.css'
-import React, {useState} from 'react';
+import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../Components/theme'
 import Head from 'next/head';
-
-
-import Header from '../Components/Header/Header'
-import Footer from '../Components/Footer/Footer'
-
-
+import { Provider } from 'react-redux'
+import store from '../redux/store'
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -22,32 +18,21 @@ export default function MyApp(props) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
-  
 
-  const [drawerState, setDrawerState] = useState(false);
-  function a11yProps(){
-    return {
-      setDrawerState:setDrawerState,
-      drawerState:drawerState
-    }
-  } 
-  
-  
   return(
     <React.Fragment>
     <Head>
       <title>Grocery App</title>
     </Head>
     <ThemeProvider theme={theme} >
-      <CssBaseline />
-      <Header {...a11yProps()} />
-      <Component {...pageProps} {...a11yProps()} />
-      <Footer />
+      <CssBaseline/>
+      <Provider store={store}>
+        <Component {...pageProps}/>
+      </Provider>
   </ThemeProvider>
   </React.Fragment>
     ) 
 }
-
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,

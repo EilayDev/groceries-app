@@ -1,6 +1,9 @@
-import {IconButton, Tooltip, Divider, ButtonBase} from '@material-ui/core';
+import {IconButton, Tooltip, Divider} from '@material-ui/core';
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import { makeStyles } from '@material-ui/core/styles';
+import { addToLists } from '../../redux/drawer/drawerReducer';
+import { useDispatch } from 'react-redux'
+
 
 import React from 'react'
 
@@ -13,12 +16,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export function CustomAdd(props, ref) {
+export function CustomAdd() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const handleAdd = (_event) => {
-    props.setLists(prevData => {
-      return [...prevData, { label: "new", id: prevData.length }]
-    })
+    dispatch(addToLists({ label: "new", id: 1 }))
   }
   return (
       <>

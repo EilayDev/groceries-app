@@ -4,6 +4,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import CloseIcon from '@material-ui/icons/Close';
 import { SwipeableDrawer, useMediaQuery, Drawer, IconButton, ButtonBase, Tab, Tabs, Divider } from '@material-ui/core';
 import CustomAdd from './CustomAdd';
+import { useSelector, useDispatch } from 'react-redux'
+import {openDrawer, closeDrawer, selectorIsOpen, removeSelectedTab, setSelectedTab, selectorGetLists, selectorGetSelectedTab} from '../../redux/drawer/drawerReducer'
+
 
 const useStyles = makeStyles((theme) => ({
   rightBorder: {
@@ -40,27 +43,31 @@ const placeholdLists = [
 
 export default function ShoppingLists(props) {
   const classes = useStyles();
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [lists, setLists] = useState(placeholdLists);
   const isScreenLarge = useMediaQuery('(min-width:600px)');
 
+  // redux
+  const isDrawerOpen = useSelector(selectorIsOpen)
+  const getLists = useSelector(selectorGetLists)
+  const getSelectedTab = useSelector(selectorGetSelectedTab)
+  const dispatch = useDispatch();
+
+
   const handleChange = (_event, newValue) => {
-    setSelectedTab(newValue);
+    dispatch(setSelectedTab(Number(newValue)))
   };
   const openDrawerHandler = () => {
-    props.setDrawerState(true)
+    dispatch(openDrawer())
   }
   const closeDrawerHandler = () => {
-    props.setDrawerState(false)
+    dispatch(closeDrawer());
   }
   
   const TabWrapper = React.forwardRef((props, ref) => {
     const handleDelList = (event) => {
       event.stopPropagation();
-      if (lists.length == 1) { return }
-      setLists((prevData) => (
-        prevData.filter((_e, i) => i != selectedTab)))
-      if (selectedTab == lists.length - 1) {
+      if (getLists.length == 1) { return }
+      dispatch(removeSelectedTab())
+      if (getSelectedTab == getLists.length - 1) {
         let tabs = document.getElementsByClassName("MuiTab-textColorInherit");
         tabs[tabs.length - 2].click();
       }
@@ -89,7 +96,7 @@ export default function ShoppingLists(props) {
               {lists.map((list, index) => (
                 <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
               ))}
-              <CustomAdd setLists={setLists}/>
+              <CustomAdd/>
             </Tabs>
           </div>
         </Drawer>
@@ -98,7 +105,7 @@ export default function ShoppingLists(props) {
           onOpen={openDrawerHandler}
           onClose={closeDrawerHandler}
           anchor="left"
-          open={props.drawerState}
+          open={isDrawerOpen}
           className={classes.fullHeight}
           classes={{
             paper: classes.drawerPaper
@@ -113,10 +120,10 @@ export default function ShoppingLists(props) {
           <div className={`${classes.rightBorder} ${classes.fullHeight}`}>
             <Tabs
               orientation="vertical"
-              value={selectedTab}
+              value={getSelectedTab}
               onChange={handleChange}
             >
-              {lists.map((list, index) => (
+              {getLists.map((list, index) => (
                 <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
               ))}
               <CustomAdd />

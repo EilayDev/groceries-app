@@ -1,4 +1,5 @@
 import styles from '../styles/Main.module.css'
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Add';
@@ -6,6 +7,8 @@ import Groceries from '../Components/GroceryMain/Groceries'
 import ShoppingLists from "../Components/DrawerAndLists/ShoppingLists";
 import Tooltip from '@material-ui/core/Tooltip';
 
+import Header from '../Components/Header/Header'
+import Footer from '../Components/Footer/Footer'
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -30,13 +33,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Main(props) {
+export default function Main() {
   const classes = useStyles();
 
   return (
+    <>
+    <Header/>
     <main className={classes.main}>
       <div>
-        <ShoppingLists {...props} />
+        <ShoppingLists/>
       </div>
       <div className={classes.groceriesDiv}>
         <Groceries />
@@ -47,5 +52,7 @@ export default function Main(props) {
         </Fab>
       </Tooltip>
     </main>
+    <Footer />
+    </>
   )
 }
