@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { TextField, Checkbox, Paper, Container, FormGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectorGetGroceries } from '../../redux/groceries/groceriesReducer'
+import { selectorGetGroceries, toggleCheckGrocery } from '../../redux/groceries/groceriesReducer'
 import { selectorGetSelectedTab, selectorGetLists } from '../../redux/drawer/drawerReducer'
 
 function GroceryItem(props) {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const getSelectedTab = useSelector(selectorGetSelectedTab);
     const handleChange = (event) => {
-        setChecked((state) => !state)
+        dispatch(toggleCheckGrocery({selectedTab: getSelectedTab, index: props.index}))
     }
     return (
         <div className={classes.product}>
@@ -76,7 +78,7 @@ export default function Groceries() {
                 </Typography>
                 <Paper className={`${classes.scrollable}`}>
                         {getGroceries[index]['items'].map((list, itemIndex) => (
-                            <GroceryItem key={itemIndex} itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
+                            <GroceryItem key={itemIndex} index={itemIndex} itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
                         ))}
                 </Paper>
                 </div>

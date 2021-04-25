@@ -29,7 +29,7 @@ export const slice = createSlice({
         },
         setSelectedTab: (state, action) => {
             state.selectedTab = action.payload;
-        }
+        },
     }
 });
 

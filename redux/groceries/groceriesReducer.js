@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import {selectorGetSelectedTab} from '../drawer/drawerReducer'
+import { useSelector } from "react-redux";
 export const slice = createSlice({
     name: 'groceriesReducer',
     initialState: {
@@ -34,7 +35,7 @@ export const slice = createSlice({
                     },
                     {
                         itemName: 'Potato',
-                        amount: '1',
+                        amount: '60',
                         isChecked: false,
                     }
                 ]
@@ -62,12 +63,15 @@ export const slice = createSlice({
         ]
     },
     reducers: {
-        
+        toggleCheckGrocery:(state, action) => {
+            const x = state.groceries[action.payload.selectedTab]['items'][action.payload.index];
+            x.isChecked = !x.isChecked;
+        }
     },
 });
 
 // Export actions
-export const {  } = slice.actions;
+export const { toggleCheckGrocery } = slice.actions;
 
 // Export Selector
 export const selectorGetGroceries = state => state.groceriesReducer.groceries;
