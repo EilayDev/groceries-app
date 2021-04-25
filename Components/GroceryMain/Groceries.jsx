@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import {TextField, Checkbox, Paper, Container, FormGroup, Typography } from '@material-ui/core';
+import { TextField, Checkbox, Paper, Container, FormGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import {selectorGetGroceries} from '../../redux/groceries/groceriesReducer'
-import { selectorGetSelectedTab } from '../../redux/drawer/drawerReducer'
+import { selectorGetGroceries } from '../../redux/groceries/groceriesReducer'
+import { selectorGetSelectedTab, selectorGetLists } from '../../redux/drawer/drawerReducer'
 
 function GroceryItem(props) {
     const classes = useStyles();
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         'margin-bottom': 25,
     },
     multiply: {
-        'margin-left':8,
+        'margin-left': 8,
         'margin-right': 8,
     },
     container: {
@@ -56,9 +56,9 @@ const useStyles = makeStyles((theme) => ({
         'alignItems': 'center'
     },
     listName: {
-        'text-align':'center',
+        'text-align': 'center',
         'margin-bottom': "1%",
-        color:'#0E1111'
+        color: '#0E1111'
     }
 }));
 
@@ -66,17 +66,21 @@ export default function Groceries() {
     const classes = useStyles();
     const getGroceries = useSelector(selectorGetGroceries);
     const getSelectedTab = useSelector(selectorGetSelectedTab);
-    // TODO: FIX GROCERY UPDATE
+    const getLists = useSelector(selectorGetLists);
     return (
         <Container className={`${classes.container} ${classes.fullHeight} `}>
-            <Typography variant="h4" className={classes.listName}>
-                TEST2 List
-            </Typography>
-            <Paper className={`${classes.scrollable}`}>
-                {getGroceries[getSelectedTab]['items'].map((list, index) => (
-                <GroceryItem key={index} itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
-                ))}
-        </Paper>
+            {getGroceries.map((item, index) => (
+                <div key={index} style={{height: '100%'}} hidden={getLists[getSelectedTab].label !== item.linkedTab}>
+                <Typography variant="h4" className={classes.listName}>
+                        {item.linkedTab} List
+                </Typography>
+                <Paper className={`${classes.scrollable}`}>
+                        {getGroceries[index]['items'].map((list, itemIndex) => (
+                            <GroceryItem key={itemIndex} itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
+                        ))}
+                </Paper>
+                </div>
+            ))}
         </Container>
 
     )

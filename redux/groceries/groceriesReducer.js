@@ -17,11 +17,6 @@ export const slice = createSlice({
                         amount: '4',
                         isChecked: false,
                     },
-                    {
-                        itemName: 'Ramen',
-                        amount: '20',
-                        isChecked: false,
-                    }
                 ]
             },
             {
@@ -43,7 +38,27 @@ export const slice = createSlice({
                         isChecked: false,
                     }
                 ]
-            }
+            },
+            {
+                linkedTab: 'Saturday',
+                items: [
+                    {
+                        itemName: 'Milk',
+                        amount: '1',
+                        isChecked: false,
+                    },
+                    {
+                        itemName: 'Banana',
+                        amount: '2',
+                        isChecked: false,
+                    },
+                    {
+                        itemName: 'Water',
+                        amount: '60',
+                        isChecked: false,
+                    }
+                ]
+            },
         ]
     },
     reducers: {
