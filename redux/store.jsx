@@ -19,7 +19,7 @@ async function update(state, actionType) {
     console.log(response)
 }
 
-const HelloMiddleware = storeAPI => next => action => {
+const myMiddleware = storeAPI => next => action => {
     next(action)
     if (action.type != "drawerReducer/setSelectedTab"
     && !action.type.includes("initialize")){
@@ -34,12 +34,12 @@ const createStore = (preloadedState) => {
             groceriesReducer: groceriesReducer
         },
         middleware: (getDefaultMiddleware) => getDefaultMiddleware()
-            .concat(HelloMiddleware),
+            .concat(myMiddleware),
         preloadedState
     })
 }
 
-let store;
+export var store;
 export const initializeStore = (preloadedState) => {
     let _store = store ?? createStore(preloadedState, );
   

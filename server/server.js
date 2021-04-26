@@ -76,9 +76,6 @@ var lists = [
     {
         label: "AnotherOne"
     },
-    {
-        label: "Test"
-    }
 ]
 
 app.get("/api/getGroceries", (req, res) => {
@@ -99,16 +96,6 @@ app.post("/api/update", (req, res) => {
     if (typeof body.lists !== 'undefined'){
         // New list
         lists = body.lists
-        groceries.push({
-            linkedTab: lists[lists.length-1].label,
-            items: [
-                {
-                    itemName: '',
-                    amount: '',
-                    isChecked: false,
-                }
-            ]
-        },)
     }
     console.log(body)
     res.sendStatus(200)

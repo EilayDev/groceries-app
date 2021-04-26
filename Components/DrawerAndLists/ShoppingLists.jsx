@@ -6,7 +6,7 @@ import { SwipeableDrawer, useMediaQuery, Drawer, IconButton, ButtonBase, Tab, Ta
 import CustomAdd from './CustomAdd';
 import { useSelector, useDispatch } from 'react-redux'
 import {openDrawer, closeDrawer, selectorIsOpen, setSelectedTab, removeSelectedTab, selectorGetLists, selectorGetSelectedTab} from '../../redux/drawer/drawerReducer'
-
+import {removeGroceries} from '../../redux/groceries/groceriesReducer'
 
 const useStyles = makeStyles((theme) => ({
   rightBorder: {
@@ -56,6 +56,7 @@ export default function ShoppingLists(props) {
       event.stopPropagation();
       if (getLists.length == 1) { return }
       dispatch(removeSelectedTab())
+      dispatch(removeGroceries(props.tab))
       if (getSelectedTab == getLists.length - 1) {
         let tabs = document.getElementsByClassName("MuiTab-textColorInherit");
         tabs[tabs.length - 2].click();
@@ -83,7 +84,7 @@ export default function ShoppingLists(props) {
               onChange={handleChange}
             >
               {getLists.map((list, index) => (
-                <Tab key={index} label={list.label} classes={{ selected: classes.selected }} component={TabWrapper} />
+                <Tab key={index} label={list.label} tab={getSelectedTab} classes={{ selected: classes.selected }} component={TabWrapper} />
               ))}
               <CustomAdd/>
             </Tabs>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TextField, Checkbox, Paper, Container, FormGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,9 +8,8 @@ import { selectorGetSelectedTab, selectorGetLists } from '../../redux/drawer/dra
 function GroceryItem(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const getSelectedTab = useSelector(selectorGetSelectedTab);
     const handleChange = (event) => {
-        dispatch(toggleCheckGrocery({selectedTab: getSelectedTab, index: props.index}))
+        dispatch(toggleCheckGrocery({linkedTab: props.linkedTab, index: props.index}))
     }
     return (
         <div className={classes.product}>
@@ -69,18 +68,20 @@ export default function Groceries() {
     const getGroceries = useSelector(selectorGetGroceries);
     const getSelectedTab = useSelector(selectorGetSelectedTab);
     const getLists = useSelector(selectorGetLists);
+
     return (
         <Container className={`${classes.container} ${classes.fullHeight} `}>
             {getGroceries.map((item, index) => (
-                <div key={index} style={{height: '100%'}} hidden={getLists[getSelectedTab].label !== item.linkedTab}>
-                <Typography variant="h4" className={classes.listName}>
-                        {item.linkedTab} List
-                </Typography>
-                <Paper className={`${classes.scrollable}`}>
+                 getLists[getSelectedTab].label === item.linkedTab && 
+                 <div key={index} style={{height: '100%'}}>
+                    <Typography variant="h4" className={classes.listName}>
+                            {item.linkedTab} List
+                    </Typography>
+                    <Paper className={`${classes.scrollable}`}>
                         {getGroceries[index]['items'].map((list, itemIndex) => (
-                            <GroceryItem key={itemIndex} index={itemIndex} itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
+                            <GroceryItem key={itemIndex} index={itemIndex} linkedTab={item.linkedTab} itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
                         ))}
-                </Paper>
+                    </Paper>
                 </div>
             ))}
         </Container>
