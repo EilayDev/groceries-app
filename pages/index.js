@@ -1,11 +1,14 @@
 import styles from '../styles/Main.module.css'
-import React, {useState} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Add';
 import Groceries from '../Components/GroceryMain/Groceries'
 import ShoppingLists from "../Components/DrawerAndLists/ShoppingLists";
 import Tooltip from '@material-ui/core/Tooltip';
+import {initializeStore} from '../redux/store'
+import {initializeLists} from '../redux/drawer/drawerReducer'
+import {initializeGroceries} from '../redux/groceries/groceriesReducer'
 
 import Header from '../Components/Header/Header'
 import Footer from '../Components/Footer/Footer'
@@ -33,7 +36,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Main() {
+// fetch data
+export async function getServerSideProps(){
+  const reduxStore = initializeStore();
+  const {dispatch} = reduxStore
+
+  // Lists
+  let response = await fetch('http://localhost:3001/api/getLists')
+  let data = await response.json()
+  dispatch(initializeLists(data))
+
+  // Groceries
+  response = await fetch('http://localhost:3001/api/getGroceries')
+  data = await response.json()
+
+  dispatch(initializeGroceries(data))
+  return { props: { initialReduxState: reduxStore.getState()}}
+}
+
+export default function Main(props) {
   const classes = useStyles();
 
   return (

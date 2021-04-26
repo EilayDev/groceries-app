@@ -5,16 +5,12 @@ export const slice = createSlice({
     initialState: {
         isOpen: false,
         selectedTab: 0,
-        lists: [
-            {
-                label: "Default"
-            },
-            {
-                label: "AnotherOne"
-            },
-        ]
+        lists: []
     },
     reducers: {
+        initializeLists: (state, action) => {
+            state.lists = action.payload;
+        },
         openDrawer: state => {
             state.isOpen = true;
         },
@@ -34,7 +30,7 @@ export const slice = createSlice({
 });
 
 // Export actions
-export const { openDrawer, closeDrawer, addToLists, removeSelectedTab, setSelectedTab } = slice.actions;
+export const { openDrawer, closeDrawer, addToLists, initializeLists, removeSelectedTab, setSelectedTab } = slice.actions;
 
 // Export Selector
 export const selectorIsOpen = state => state.drawerReducer.isOpen;
