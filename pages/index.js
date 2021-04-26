@@ -1,14 +1,14 @@
 import styles from '../styles/Main.module.css'
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
+import {Fab, Tooltip} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Add';
 import Groceries from '../Components/GroceryMain/Groceries'
 import ShoppingLists from "../Components/DrawerAndLists/ShoppingLists";
-import Tooltip from '@material-ui/core/Tooltip';
 import {initializeStore} from '../redux/store'
-import {initializeLists} from '../redux/drawer/drawerReducer'
-import {initializeGroceries} from '../redux/groceries/groceriesReducer'
+import {initializeLists, selectorGetSelectedTab} from '../redux/drawer/drawerReducer'
+import {initializeGroceries, addToGroceriesAt} from '../redux/groceries/groceriesReducer'
+import {useSelector, useDispatch} from 'react-redux'
 
 import Header from '../Components/Header/Header'
 import Footer from '../Components/Footer/Footer'
@@ -57,7 +57,12 @@ export async function getServerSideProps(){
 
 export default function Main(props) {
   const classes = useStyles();
-
+  const dispatch = useDispatch()
+  const getSelectedTab = useSelector(selectorGetSelectedTab);
+  const handleFabClick = () => {
+    // push empty grocery item
+    dispatch(addToGroceriesAt({index: getSelectedTab, item: {itemName: '', amount: '', isChecked: false}}))
+  }
   return (
     <>
     <Header/>
@@ -69,7 +74,7 @@ export default function Main(props) {
         <Groceries />
       </div>
       <Tooltip title="Add a product">
-        <Fab color="primary" aria-label="edit" className={classes.fab}>
+        <Fab color="primary" aria-label="edit" onClick={handleFabClick} className={classes.fab}>
           <EditIcon />
         </Fab>
       </Tooltip>

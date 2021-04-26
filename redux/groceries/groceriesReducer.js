@@ -30,6 +30,12 @@ export const slice = createSlice({
         addToGroceries: (state, action) => {
             state.groceries.push(action.payload)
         },
+        addToGroceriesAt: (state, action) => {
+            console.log("Index: " + action.payload.index)
+            console.log(state.groceries[action.payload.index]["items"])
+            console.log(action.payload.item)
+            state.groceries[action.payload.index]["items"].push(action.payload.item)
+        },
         removeGroceries: (state, action) => {
             state.groceries.splice(action.payload+1, 1)
         }
@@ -37,7 +43,7 @@ export const slice = createSlice({
 });
 
 // Export actions
-export const { toggleCheckGrocery, initializeGroceries, addToGroceries, removeGroceries } = slice.actions;
+export const { toggleCheckGrocery, initializeGroceries, addToGroceries, removeGroceries, addToGroceriesAt } = slice.actions;
 
 // Export Selector
 export const selectorGetGroceries = state => state.groceriesReducer.groceries;

@@ -47,26 +47,6 @@ var groceries = [
             }
         ]
     },
-    {
-        linkedTab: 'Saturday',
-        items: [
-            {
-                itemName: 'Milk',
-                amount: '1',
-                isChecked: false,
-            },
-            {
-                itemName: 'Banana',
-                amount: '2',
-                isChecked: false,
-            },
-            {
-                itemName: 'Water',
-                amount: '60',
-                isChecked: false,
-            }
-        ]
-    },
 ]
 
 var lists = [
