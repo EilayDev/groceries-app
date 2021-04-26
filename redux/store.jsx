@@ -16,7 +16,7 @@ async function update(state, actionType) {
         },
         body: JSON.stringify(newData)
     })
-    console.log(response)
+    // TODO: fix double update
 }
 
 const myMiddleware = storeAPI => next => action => {

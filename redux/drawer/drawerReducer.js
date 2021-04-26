@@ -6,6 +6,12 @@ export const slice = createSlice({
         isOpen: false,
         selectedTab: 0,
         lists: []
+
+        /* List structure:
+        {
+            label: *name*
+        }
+        */
     },
     reducers: {
         initializeLists: (state, action) => {

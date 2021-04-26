@@ -4,6 +4,20 @@ export const slice = createSlice({
     name: 'groceriesReducer',
     initialState: {
         groceries: []
+        
+        /*
+        grocery structure:
+        {
+            linkedTab: '',
+            items: [
+                {
+                    itemName: '',
+                    amount: '',
+                    isChecked: false,
+                },
+            ]
+        },
+        */
     },
     reducers: {
         initializeGroceries: (state, action) => {
