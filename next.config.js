@@ -1,4 +1,12 @@
 // next.config.js
 module.exports = {
-    reactStrictMode: true
+    reactStrictMode: true,
+    async rewrites(){
+      return [
+        {
+          source: '/api/:path*',
+          destination: "http://localhost:3001/api/:path*"
+        }
+      ]
+    }
   }

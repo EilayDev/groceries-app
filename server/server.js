@@ -1,14 +1,17 @@
+const bp = require('body-parser')
 const express = require("express");
 
 const PORT = 3001;
 
 const app = express();
 
+app.use(bp.json())
+app.use(bp.urlencoded({extended:true}))
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
-const groceries = [
+var groceries = [
     {
         linkedTab: 'Default',
         items: [
@@ -66,7 +69,7 @@ const groceries = [
     },
 ]
 
-const lists = [
+var lists = [
     {
         label: "Default"
     },
@@ -84,3 +87,29 @@ app.get("/api/getGroceries", (req, res) => {
 app.get("/api/getLists", (req, res) => {
     res.json(lists);
 });
+app.get("/api/ping", (req, res) => {
+    console.log("Pinged!")
+    res.end();
+})
+app.post("/api/update", (req, res) => {
+    const body = req.body;
+    if (typeof body.groceries !== 'undefined'){
+        groceries = body.groceries;
+    }
+    if (typeof body.lists !== 'undefined'){
+        // New list
+        lists = body.lists
+        groceries.push({
+            linkedTab: lists[lists.length-1].label,
+            items: [
+                {
+                    itemName: '',
+                    amount: '',
+                    isChecked: false,
+                }
+            ]
+        },)
+    }
+    console.log(body)
+    res.sendStatus(200)
+})

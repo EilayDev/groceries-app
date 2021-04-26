@@ -38,16 +38,17 @@ const useStyles = makeStyles((theme) => ({
 
 // fetch data
 export async function getServerSideProps(){
+  const SERVER = 'http://localhost:3000/api/'
   const reduxStore = initializeStore();
   const {dispatch} = reduxStore
 
   // Lists
-  let response = await fetch('http://localhost:3001/api/getLists')
+  let response = await fetch(SERVER + 'getLists')
   let data = await response.json()
   dispatch(initializeLists(data))
 
   // Groceries
-  response = await fetch('http://localhost:3001/api/getGroceries')
+  response = await fetch(SERVER + 'getGroceries')
   data = await response.json()
 
   dispatch(initializeGroceries(data))
