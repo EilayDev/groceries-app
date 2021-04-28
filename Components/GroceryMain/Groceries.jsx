@@ -1,25 +1,43 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { TextField, Checkbox, Paper, Container, FormGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectorGetGroceries, toggleCheckGrocery } from '../../redux/groceries/groceriesReducer'
+import { selectorGetGroceries, updateGrocery } from '../../redux/groceries/groceriesReducer'
 import { selectorGetSelectedTab, selectorGetLists } from '../../redux/drawer/drawerReducer'
 
 function GroceryItem(props) {
     const classes = useStyles();
+    const [checked, setChecked] = useState(props.isChecked)
     const dispatch = useDispatch();
-    const handleChange = (event) => {
-        dispatch(toggleCheckGrocery({linkedTab: props.linkedTab, index: props.index}))
+    const itemRef = React.createRef();
+    const amountRef = React.createRef();
+    const checkboxRef = React.createRef();
+
+    const dispatchUpdate = () => {
+        dispatch(updateGrocery({linkedTab: props.linkedTab, index: props.index,
+            itemName: itemRef.current.value, amount: amountRef.current.value,
+            checkStatus: checked
+             }))
+    }
+    useEffect(() => {
+        itemRef.current.onchange = dispatchUpdate;
+        amountRef.current.onchange = dispatchUpdate;
+        checkboxRef.current.onchange = dispatchUpdate;
+    })
+    const toggleCheckbox = (_) => {
+        setChecked(!checked)
     }
     return (
         <div className={classes.product}>
             <FormGroup row={true} className={`${classes.formField}`}>
-                <TextField className={classes.inputField} disabled={props.isChecked} label="Item" variant="outlined" defaultValue={props.itemName} /> <div className={classes.multiply}><span> X </span></div>
-                <TextField className={classes.amountField} disabled={props.isChecked} label="Amount" variant="outlined" defaultValue={props.amount} />
+                <TextField inputRef={itemRef} className={classes.inputField} disabled={props.isChecked} label="Item" variant="outlined" defaultValue={props.itemName} /> 
+                <div className={classes.multiply}><span> X </span></div>
+                <TextField inputRef={amountRef} className={classes.amountField} disabled={props.isChecked} label="Amount" variant="outlined" defaultValue={props.amount} />
                 <Checkbox
-                    checked={props.isChecked}
+                    checked={checked}
                     color="primary"
-                    onClick={handleChange}
+                    inputRef={checkboxRef}
+                    onClick={toggleCheckbox}
                 />
             </FormGroup>
         </div>
@@ -79,7 +97,8 @@ export default function Groceries() {
                     </Typography>
                     <Paper className={`${classes.scrollable}`}>
                         {getGroceries[index]['items'].map((list, itemIndex) => (
-                            <GroceryItem key={itemIndex} index={itemIndex} linkedTab={item.linkedTab} itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
+                            <GroceryItem key={itemIndex} index={itemIndex} linkedTab={item.linkedTab}
+                            itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
                         ))}
                     </Paper>
                 </div>

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ShoppingLists(props) {
   const classes = useStyles();
   const isScreenLarge = useMediaQuery('(min-width:600px)');
-
+  const tabsRef = React.createRef();
   // redux
   const isDrawerOpen = useSelector(selectorIsOpen)
   const getLists = useSelector(selectorGetLists)
@@ -82,6 +82,7 @@ export default function ShoppingLists(props) {
               orientation="vertical"
               value={getSelectedTab}
               onChange={handleChange}
+              ref={tabsRef}
             >
               {getLists.map((list, index) => (
                 <Tab key={index} label={list.label} tab={getSelectedTab} classes={{ selected: classes.selected }} component={TabWrapper} />

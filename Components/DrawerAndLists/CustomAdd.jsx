@@ -81,7 +81,7 @@ export function CustomAdd() {
             horizontal: 'center',
           }}>
             <Typography component={'span'} className={classes.typography}>
-            <TextField inputRef={reference} id="filled-basic" label="Enter new list name" variant="filled" />
+            <TextField autoFocus={true} inputRef={reference} id="filled-basic" label="Enter new list name" variant="filled" />
             <CheckIcon onClick={submitName} fontSize="large"/>
             </Typography>
             <Snackbar open={nameAlert} autoHideDuration={6000} onClose={handleCloseSnackbar}>

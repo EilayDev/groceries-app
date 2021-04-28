@@ -27,6 +27,14 @@ export const slice = createSlice({
             const x = state.groceries.filter((item) => item.linkedTab === action.payload.linkedTab)[0]['items'][action.payload.index];
             x.isChecked = !x.isChecked;
         },
+        updateGrocery: (state, action) => {
+            const x = state.groceries.filter((item) => item.linkedTab === action.payload.linkedTab)[0]['items'][action.payload.index];
+            if (x){
+                x.isChecked = action.payload.checkStatus;
+                x.itemName = action.payload.itemName;
+                x.amount = action.payload.amount;
+            }
+        },
         addToGroceries: (state, action) => {
             state.groceries.push(action.payload)
         },
@@ -34,13 +42,13 @@ export const slice = createSlice({
             const x = state.groceries.filter(item => item.linkedTab === action.payload.name)[0]['items'].push(action.payload.item)
         },
         removeGroceries: (state, action) => {
-            state.groceries.splice(action.payload+1, 1)
+            state.groceries.splice(action.payload, 1)
         }
     },
 });
 
 // Export actions
-export const { toggleCheckGrocery, initializeGroceries, addToGroceries, removeGroceries, addToGroceriesAt } = slice.actions;
+export const { updateGrocery, toggleCheckGrocery, initializeGroceries, addToGroceries, removeGroceries, addToGroceriesAt } = slice.actions;
 
 // Export Selector
 export const selectorGetGroceries = state => state.groceriesReducer.groceries;

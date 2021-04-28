@@ -20,7 +20,9 @@ async function update(state, actionType) {
 
 const myMiddleware = storeAPI => next => action => {
     next(action)
-    if (action.type != "drawerReducer/setSelectedTab"
+    if ((action.type != "drawerReducer/setSelectedTab" && 
+        action.type != "drawerReducer/closeDrawer" &&
+        action.type != "drawerReducer/openDrawer")
     && !action.type.includes("initialize")){
         update(storeAPI.getState(), action.type)
     }
