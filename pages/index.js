@@ -6,7 +6,7 @@ import EditIcon from '@material-ui/icons/Add';
 import Groceries from '../Components/GroceryMain/Groceries'
 import ShoppingLists from "../Components/DrawerAndLists/ShoppingLists";
 import {initializeStore} from '../redux/store'
-import {initializeLists, selectorGetSelectedTab} from '../redux/drawer/drawerReducer'
+import {initializeLists, selectorGetSelectedTabName} from '../redux/drawer/drawerReducer'
 import {initializeGroceries, addToGroceriesAt} from '../redux/groceries/groceriesReducer'
 import {useSelector, useDispatch} from 'react-redux'
 
@@ -58,10 +58,10 @@ export async function getServerSideProps(){
 export default function Main(props) {
   const classes = useStyles();
   const dispatch = useDispatch()
-  const getSelectedTab = useSelector(selectorGetSelectedTab);
+  const getSelectedTabName = useSelector(selectorGetSelectedTabName);
   const handleFabClick = () => {
     // push empty grocery item
-    dispatch(addToGroceriesAt({index: getSelectedTab, item: {itemName: '', amount: '', isChecked: false}}))
+    dispatch(addToGroceriesAt({name: getSelectedTabName, item: {itemName: '', amount: '', isChecked: false}}))
   }
   return (
     <>

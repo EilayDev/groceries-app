@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         'width': '20ch'
     },
     amountField: {
-        'width': '9ch'
+        'max-width': '11ch'
     },
     scrollable: {
         'height': '100%',

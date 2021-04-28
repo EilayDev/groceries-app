@@ -31,10 +31,7 @@ export const slice = createSlice({
             state.groceries.push(action.payload)
         },
         addToGroceriesAt: (state, action) => {
-            console.log("Index: " + action.payload.index)
-            console.log(state.groceries[action.payload.index]["items"])
-            console.log(action.payload.item)
-            state.groceries[action.payload.index]["items"].push(action.payload.item)
+            const x = state.groceries.filter(item => item.linkedTab === action.payload.name)[0]['items'].push(action.payload.item)
         },
         removeGroceries: (state, action) => {
             state.groceries.splice(action.payload+1, 1)

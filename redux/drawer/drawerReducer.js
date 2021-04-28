@@ -42,5 +42,7 @@ export const { openDrawer, closeDrawer, addToLists, initializeLists, removeSelec
 export const selectorIsOpen = state => state.drawerReducer.isOpen;
 export const selectorGetLists = state => state.drawerReducer.lists;
 export const selectorGetSelectedTab = state => state.drawerReducer.selectedTab;
+export const selectorGetSelectedTabName = state => state.drawerReducer.lists[state.drawerReducer.selectedTab].label;
+
 
 export default slice.reducer;

@@ -40,8 +40,12 @@ export function CustomAdd() {
   const reference = React.createRef();
   const submitName = (event) => {
     const name = reference.current.value
+    // if name empty
+    if (name === ''){
+      return
+    }
+    // if name already exists
     if (getLists.filter((item) => item.label.toLowerCase() === name.toLowerCase()).length) {
-      // name already exists
       setNameAlert(true)
       return
     }
