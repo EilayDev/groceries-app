@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { TextField, Checkbox, Paper, Container, FormGroup, Typography } from '@material-ui/core';
+import { TextField, Checkbox, Paper, Box, FormGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectorGetGroceries, updateGrocery } from '../../redux/groceries/groceriesReducer'
@@ -74,6 +74,10 @@ const useStyles = makeStyles((theme) => ({
         'justifyContent': 'center',
         'alignItems': 'center'
     },
+    paper: {
+        marginLeft: "2%",
+        marginRight: "2%"
+    },
     listName: {
         'text-align': 'center',
         'margin-bottom': "1%",
@@ -88,22 +92,22 @@ export default function Groceries() {
     const getLists = useSelector(selectorGetLists);
 
     return (
-        <Container className={`${classes.container} ${classes.fullHeight} `}>
+        <Box display="flex" flexDirection="column" className={`${classes.container} ${classes.fullHeight} `}>
             {getGroceries.map((item, index) => (
                  getLists[getSelectedTab].label === item.linkedTab && 
-                 <div key={index} style={{height: '100%'}}>
+                 <>
                     <Typography variant="h4" className={classes.listName}>
                             {item.linkedTab} List
                     </Typography>
-                    <Paper className={`${classes.scrollable}`}>
+                    <Paper className={`${classes.scrollable} ${classes.paper}`}>
                         {getGroceries[index]['items'].map((list, itemIndex) => (
                             <GroceryItem key={itemIndex} index={itemIndex} linkedTab={item.linkedTab}
                             itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
                         ))}
                     </Paper>
-                </div>
+                    </>
             ))}
-        </Container>
+        </Box>
 
     )
 }
