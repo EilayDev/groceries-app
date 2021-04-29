@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   main: {
     display: 'flex',
     'align-items': 'stretch',
-    height: '85vh',
+    height: 'calc(100% - 64px)',
     width: '100%'
   },
   fab: {
@@ -79,7 +79,6 @@ export default function Main(props) {
         </Fab>
       </Tooltip>
     </main>
-    <Footer />
     </>
   )
 }

@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+#__next{
+  height:100vh;
+}
+
 
 /* width */
 ::-webkit-scrollbar {
