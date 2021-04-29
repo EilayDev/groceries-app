@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import { TextField, Checkbox, Paper, Box, FormGroup, Typography } from '@material-ui/core';
+
+import React, { useEffect, useState } from 'react';
+import { TextField, Checkbox, Paper, Container, FormGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectorGetGroceries, updateGrocery } from '../../redux/groceries/groceriesReducer'
@@ -14,10 +15,11 @@ function GroceryItem(props) {
     const checkboxRef = React.createRef();
 
     const dispatchUpdate = () => {
-        dispatch(updateGrocery({linkedTab: props.linkedTab, index: props.index,
+        dispatch(updateGrocery({
+            linkedTab: props.linkedTab, index: props.index,
             itemName: itemRef.current.value, amount: amountRef.current.value,
             checkStatus: checked
-             }))
+        }))
     }
     useEffect(() => {
         itemRef.current.onchange = dispatchUpdate;
@@ -30,7 +32,7 @@ function GroceryItem(props) {
     return (
         <div className={classes.product}>
             <FormGroup row={true} className={`${classes.formField}`}>
-                <TextField inputRef={itemRef} className={classes.inputField} disabled={props.isChecked} label="Item" variant="outlined" defaultValue={props.itemName} /> 
+                <TextField inputRef={itemRef} className={classes.inputField} disabled={props.isChecked} label="Item" variant="outlined" defaultValue={props.itemName} />
                 <div className={classes.multiply}><span> X </span></div>
                 <TextField inputRef={amountRef} className={classes.amountField} disabled={props.isChecked} label="Amount" variant="outlined" defaultValue={props.amount} />
                 <Checkbox
@@ -58,7 +60,9 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         'padding-top': '1%',
-        'padding-bottom': '2%'
+        'padding-bottom': '2%',
+        'display': 'flex',
+        'flex-direction': 'column',
     },
     inputField: {
         'width': '20ch'
@@ -92,22 +96,22 @@ export default function Groceries() {
     const getLists = useSelector(selectorGetLists);
 
     return (
-        <Box display="flex" flexDirection="column" className={`${classes.container} ${classes.fullHeight} `}>
+        <Container className={`${classes.container} ${classes.fullHeight} `}>
             {getGroceries.map((item, index) => (
-                 getLists[getSelectedTab].label === item.linkedTab && 
-                 <>
+                getLists[getSelectedTab].label === item.linkedTab &&
+                <React.Fragment key={index}>
                     <Typography variant="h4" className={classes.listName}>
-                            {item.linkedTab} List
+                        {item.linkedTab} List
                     </Typography>
                     <Paper className={`${classes.scrollable} ${classes.paper}`}>
                         {getGroceries[index]['items'].map((list, itemIndex) => (
                             <GroceryItem key={itemIndex} index={itemIndex} linkedTab={item.linkedTab}
-                            itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
+                                itemName={list.itemName} amount={list.amount} isChecked={list.isChecked} />
                         ))}
                     </Paper>
-                    </>
+                </React.Fragment>
             ))}
-        </Box>
+        </Container>
 
     )
 }
