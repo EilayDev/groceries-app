@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import {Card, CardContent, Grid, Button, Divider} from '@material-ui/core';
+import {Card, CardContent, Grid, Button, Divider, TextField} from '@material-ui/core';
 
 export default function Login(){
     return (
@@ -10,14 +10,17 @@ export default function Login(){
                     Login page!
                     <br/>
                     <br/>
-                    <Button variant="contained" color="secondary">
+                    <TextField placeholder="Room ID"/>
+                    <br/>
+                    <br/>
+                    <Button variant="contained" color="primary">
                         Join existing one
                     </Button>
                     <br/>
                     <br/>
-                    <Divider />
+                    <Divider/>
                     <br/>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" style={{backgroundColor: "#337e8b", color:'white'}}>
                         Create new room
                     </Button>
                     <br/>
