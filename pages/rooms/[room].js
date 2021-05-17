@@ -1,17 +1,15 @@
-import styles from '../styles/Main.module.css'
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Fab, Tooltip} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Add';
-import Groceries from '../Components/GroceryMain/Groceries'
-import ShoppingLists from "../Components/DrawerAndLists/ShoppingLists";
-import {initializeStore} from '../redux/store'
-import {initializeLists, selectorGetSelectedTabName} from '../redux/drawer/drawerReducer'
-import {initializeGroceries, addToGroceriesAt} from '../redux/groceries/groceriesReducer'
+import Groceries from '../../Components/GroceryMain/Groceries'
+import ShoppingLists from "../../Components/DrawerAndLists/ShoppingLists";
+import {initializeStore} from '../../redux/store'
+import {initializeLists, selectorGetSelectedTabName} from '../../redux/drawer/drawerReducer'
+import {initializeGroceries, addToGroceriesAt} from '../../redux/groceries/groceriesReducer'
 import {useSelector, useDispatch} from 'react-redux'
 
-import Header from '../Components/Header/Header'
-import Footer from '../Components/Footer/Footer'
+import Header from '../../Components/Header/Header'
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -37,21 +35,31 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // fetch data
-export async function getServerSideProps(){
+export async function getServerSideProps(context){
+  const {room} = context.query;
   const SERVER = 'http://localhost:3002/api/'
   const reduxStore = initializeStore();
   const {dispatch} = reduxStore
 
-  // Lists
-  let response = await fetch(SERVER + 'getLists')
-  let data = await response.json()
-  dispatch(initializeLists(data))
+  const response = await fetch(SERVER + 'getRoomData/' + room)
+  let data;
+  try {
+    data = await response.json()
+  }
+  // redirect to mainpage if room doesn't exist or has some error
+  catch{
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+      props:{},
+    };
+  }
 
-  // Groceries
-  response = await fetch(SERVER + 'getGroceries')
-  data = await response.json()
+  dispatch(initializeLists(data.lists))
+  dispatch(initializeGroceries(data.groceries))
 
-  dispatch(initializeGroceries(data))
   return { props: { initialReduxState: reduxStore.getState()}}
 }
 
