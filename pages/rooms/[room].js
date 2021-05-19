@@ -37,7 +37,13 @@ const useStyles = makeStyles((theme) => ({
 // fetch data
 export async function getServerSideProps(context){
   const {room} = context.query;
-  const SERVER = 'http://localhost:3002/api/'
+  console.log(context)
+  let SERVER = ''
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    SERVER = 'http://localhost:3002/api/'
+  } else {
+    SERVER = 'http://localhost:3005/api/'
+  }
   const reduxStore = initializeStore();
   const {dispatch} = reduxStore
 
@@ -56,9 +62,11 @@ export async function getServerSideProps(context){
       props:{},
     };
   }
-
-  dispatch(initializeLists(data.lists))
-  dispatch(initializeGroceries(data.groceries))
+  const lists = data.map(i => {
+    return {label: i.linkedTab}
+  })
+  dispatch(initializeLists(lists))
+  dispatch(initializeGroceries(data))
 
   return { props: { initialReduxState: reduxStore.getState()}}
 }
