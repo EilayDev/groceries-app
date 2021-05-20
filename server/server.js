@@ -77,3 +77,29 @@ app.post("/api/update/:roomID", (req, res) => {
     console.log(body)
     res.sendStatus(200)
 })
+
+app.get("/api/createRoom", (req, res) => {
+    const randomID = random_id()
+    console.log("Creating new room ID: " + randomID)
+    database[randomID] = [
+        {
+            linkedTab: 'Default',
+            items: [
+                {
+                    itemName: '',
+                    amount: '',
+                    isChecked: false,
+                },
+            ]
+        },
+    ]
+    
+    res.end(JSON.stringify({roomID: randomID}))
+})
+
+function random_id() {
+    return 'yxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
