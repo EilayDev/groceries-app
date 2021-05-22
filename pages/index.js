@@ -56,7 +56,6 @@ export default function Login(props){
         <>
         <Grid container justify="center" alignItems="center" style={{height:'100%'}}>
             <Card style={{marginBottom:'10%'}}>
-                {/* TODO: implement join existing room */}
                 <CardContent style={{textAlign:"center"}}>
                     Login page!
                     <br/>
