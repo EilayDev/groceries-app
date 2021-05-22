@@ -59,6 +59,18 @@ app.get("/api/getRoomData/:roomID", (req, res) => {
     res.json(database[roomID]);
 });
 
+app.get('/api/getRoomStatus/:roomID', (req, res) => {
+    const roomID = req.params.roomID;
+    if (!roomID || typeof database[roomID] === 'undefined'){
+        res.sendStatus(404);
+        return
+    }
+    else {
+        res.sendStatus(200)
+        return
+    }
+})
+
 app.get("/api/ping", (req, res) => {
     console.log("Pinged!")
     res.end();

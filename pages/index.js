@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import {Card, CardContent, Grid, Button, Divider, TextField, Modal, Link} from '@material-ui/core';
+import {Card, CardContent, Grid, Button, Divider, TextField, Modal, Link, Snackbar} from '@material-ui/core';
 import DoneAllRoundedIcon from '@material-ui/icons/DoneAllRounded';
+import Alert from '@material-ui/lab/Alert';
 import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +18,8 @@ export default function Login(props){
     const router = useRouter()
     const [open, setOpen] = useState(false);
     const [ROOMID, setROOMID] = useState();
+    const [roomValue, setRoomValue] = useState();
+    const [alertStatus, setAlertStatus] = useState();
 
     const handleOpen = () => {
         setOpen(true);
@@ -24,12 +27,27 @@ export default function Login(props){
     const handleClose = () => {
         setOpen(false);
     };
-
+    const inputHandler = (e) => {
+        setRoomValue(e.target.value)
+    }
+    
+    function joinRoom(){
+        fetch('/api/getRoomStatus/' + roomValue)
+            .then(response => {
+                if(response.status == '200'){
+                    // Go to room
+                    router.push('/rooms/'+roomValue)
+                }
+                else {
+                    // Room doesnt exist
+                    setAlertStatus(true)
+                }
+            })
+    }
     function createRoom() {
         fetch('/api/createRoom')
             .then(response=>response.json())
             .then(data=>{
-                //router.push('/rooms/'+data.roomID)
                 setROOMID(data.roomID)
                 handleOpen()
             })
@@ -43,14 +61,17 @@ export default function Login(props){
                     Login page!
                     <br/>
                     <br/>
-                    <TextField placeholder="Room ID"/>
+                    <TextField onChange={inputHandler} placeholder="Room ID"/>
                     <br/>
                     <br/>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" onClick={joinRoom}>
                         Join existing one
                     </Button>
                     <br/>
                     <br/>
+                    <Snackbar open={alertStatus}>
+                        <Alert severity="error">Room doesn't exist!</Alert>
+                    </Snackbar>
                     <Divider/>
                     <br/>
                     <Button onClick={createRoom} variant="contained" style={{backgroundColor: "#337e8b", color:'white'}}>
