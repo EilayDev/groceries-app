@@ -1,84 +1,111 @@
-import styles from '../styles/Main.module.css'
-import React from 'react';
+import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import {Fab, Tooltip} from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Add';
-import Groceries from '../Components/GroceryMain/Groceries'
-import ShoppingLists from "../Components/DrawerAndLists/ShoppingLists";
-import {initializeStore} from '../redux/store'
-import {initializeLists, selectorGetSelectedTabName} from '../redux/drawer/drawerReducer'
-import {initializeGroceries, addToGroceriesAt} from '../redux/groceries/groceriesReducer'
-import {useSelector, useDispatch} from 'react-redux'
-
-import Header from '../Components/Header/Header'
-import Footer from '../Components/Footer/Footer'
+import {Card, CardContent, Grid, Button, Divider, TextField, Modal, Link, Snackbar} from '@material-ui/core';
+import DoneAllRoundedIcon from '@material-ui/icons/DoneAllRounded';
+import Alert from '@material-ui/lab/Alert';
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
-  main: {
-    display: 'flex',
-    'align-items': 'stretch',
-    height: 'calc(100% - 64px)',
-    width: '100%'
-  },
-  fab: {
-    position: 'absolute',
-    [theme.breakpoints.down('md')]: {
-      bottom: theme.spacing(5),
-      right: theme.spacing(5),
-    },
-    [theme.breakpoints.up('md')]: {
-      bottom: theme.spacing(10),
-      right: theme.spacing(10),
+    centerModal:{
+        'top': '50%',
+        'left': '50%',
+        'transform': 'translate(-50%, -50%)',
     }
-  },
-  groceriesDiv: {
-    flex: 1,
-  }
 }))
 
-// fetch data
-export async function getServerSideProps(){
-  const SERVER = 'http://localhost:3000/api/'
-  const reduxStore = initializeStore();
-  const {dispatch} = reduxStore
+export default function Login(props){
+    const classes = useStyles();
+    const router = useRouter()
+    const [open, setOpen] = useState(false);
+    const [ROOMID, setROOMID] = useState();
+    const [roomValue, setRoomValue] = useState();
+    const [alertStatus, setAlertStatus] = useState();
 
-  // Lists
-  let response = await fetch(SERVER + 'getLists')
-  let data = await response.json()
-  dispatch(initializeLists(data))
-
-  // Groceries
-  response = await fetch(SERVER + 'getGroceries')
-  data = await response.json()
-
-  dispatch(initializeGroceries(data))
-  return { props: { initialReduxState: reduxStore.getState()}}
-}
-
-export default function Main(props) {
-  const classes = useStyles();
-  const dispatch = useDispatch()
-  const getSelectedTabName = useSelector(selectorGetSelectedTabName);
-  const handleFabClick = () => {
-    // push empty grocery item
-    dispatch(addToGroceriesAt({name: getSelectedTabName, item: {itemName: '', amount: '', isChecked: false}}))
-  }
-  return (
-    <>
-    <Header/>
-    <main className={classes.main}>
-      <div>
-        <ShoppingLists/>
-      </div>
-      <div className={classes.groceriesDiv}>
-        <Groceries />
-      </div>
-      <Tooltip title="Add a product">
-        <Fab color="primary" aria-label="edit" onClick={handleFabClick} className={classes.fab}>
-          <EditIcon />
-        </Fab>
-      </Tooltip>
-    </main>
-    </>
-  )
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const inputHandler = (e) => {
+        setRoomValue(e.target.value)
+    }
+    
+    function joinRoom(){
+        fetch('/api/getRoomStatus/' + roomValue)
+            .then(response => {
+                if(response.status == '200'){
+                    // Go to room
+                    router.push('/rooms/'+roomValue)
+                }
+                else {
+                    // Room doesnt exist
+                    setAlertStatus(true)
+                }
+            })
+    }
+    function createRoom() {
+        fetch('/api/createRoom')
+            .then(response=>response.json())
+            .then(data=>{
+                setROOMID(data.roomID)
+                handleOpen()
+            })
+    }
+    return (
+        <>
+        <Grid container justify="center" alignItems="center" style={{height:'100%'}}>
+            <Card style={{marginBottom:'10%'}}>
+                {/* TODO: implement join existing room */}
+                <CardContent style={{textAlign:"center"}}>
+                    Login page!
+                    <br/>
+                    <br/>
+                    <TextField onChange={inputHandler} placeholder="Room ID"/>
+                    <br/>
+                    <br/>
+                    <Button variant="contained" color="primary" onClick={joinRoom}>
+                        Join existing one
+                    </Button>
+                    <br/>
+                    <br/>
+                    <Snackbar open={alertStatus}>
+                        <Alert severity="error">Room doesn't exist!</Alert>
+                    </Snackbar>
+                    <Divider/>
+                    <br/>
+                    <Button onClick={createRoom} variant="contained" style={{backgroundColor: "#337e8b", color:'white'}}>
+                        Create new room
+                    </Button>
+                    <br/>
+                    <br/>
+                    Note: This is a DEMO. 
+                    <br/>
+                    Database resets every 15 minutes.
+                </CardContent>
+            </Card>
+        </Grid>
+        <Modal
+            open={open}
+            onClose={handleClose}
+        >
+            <Grid container justify="center" alignItems="center" style={{height:'100%'}}>
+                <Card>
+                    <CardContent>
+                        Your new room has been created <span><DoneAllRoundedIcon fontSize="small" style={{ color: 'rgb(37 141 41)', 'verticalAlign': 'bottom' }}/></span>
+                        <br/>
+                        Room's URL:
+                        <br/>
+                        <Link href={'/rooms/' + ROOMID} color="initial">
+                            {process.browser &&
+                                window.location.href + 'rooms/' + ROOMID
+                            }
+                            
+                        </Link>
+                    </CardContent>
+                </Card>
+            </Grid>
+        </Modal>
+        </>
+    )
 }

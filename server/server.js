@@ -8,11 +8,11 @@ const app = express();
 app.use(bp.json())
 app.use(bp.urlencoded({extended:true}))
 app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+    console.log(`Server listening on ${PORT}`);
 });
 
-var groceries = [
-    {
+var database = {
+    'asd': [{
         linkedTab: 'Default',
         items: [
             {
@@ -47,36 +47,71 @@ var groceries = [
             }
         ]
     },
-]
-
-var lists = [
-    {
-        label: "Default"
-    },
-    {
-        label: "AnotherOne"
-    },
-]
-
-app.get("/api/getGroceries", (req, res) => {
-    res.json(groceries);
+    ],
+}
+app.get("/api/getRoomData/:roomID", (req, res) => {
+    const roomID = req.params.roomID;
+    if (!roomID || typeof database[roomID] === 'undefined') {
+        res.sendStatus(404);
+        return
+    }
+    console.log("ROOM ID RECIEVED: " + roomID)
+    res.json(database[roomID]);
 });
-app.get("/api/getLists", (req, res) => {
-    res.json(lists);
-});
+
+app.get('/api/getRoomStatus/:roomID', (req, res) => {
+    const roomID = req.params.roomID;
+    if (!roomID || typeof database[roomID] === 'undefined'){
+        res.sendStatus(404);
+        return
+    }
+    else {
+        res.sendStatus(200)
+        return
+    }
+})
+
 app.get("/api/ping", (req, res) => {
     console.log("Pinged!")
     res.end();
 })
-app.post("/api/update", (req, res) => {
-    const body = req.body;
-    if (typeof body.groceries !== 'undefined'){
-        groceries = body.groceries;
+app.post("/api/update/:roomID", (req, res) => {
+    const roomID = req.params.roomID;
+    if (!roomID || typeof database[roomID] === 'undefined') {
+        res.sendStatus(404);
+        return
     }
-    if (typeof body.lists !== 'undefined'){
-        // New list
-        lists = body.lists
+
+    const body = req.body;
+    if (typeof body.groceries !== 'undefined') {
+        database[roomID] = body.groceries
     }
     console.log(body)
     res.sendStatus(200)
 })
+
+app.get("/api/createRoom", (req, res) => {
+    const randomID = random_id()
+    console.log("Creating new room ID: " + randomID)
+    database[randomID] = [
+        {
+            linkedTab: 'Default',
+            items: [
+                {
+                    itemName: '',
+                    amount: '',
+                    isChecked: false,
+                },
+            ]
+        },
+    ]
+    
+    res.end(JSON.stringify({roomID: randomID}))
+})
+
+function random_id() {
+    return 'yxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }

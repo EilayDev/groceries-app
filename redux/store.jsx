@@ -2,13 +2,12 @@ import {configureStore} from '@reduxjs/toolkit';
 import { useMemo } from 'react'
 import drawerReducer from './drawer/drawerReducer';
 import groceriesReducer from './groceries/groceriesReducer';
-import { useSelector, useDispatch } from 'react-redux';
-import {selectorGetLists} from '../redux/drawer/drawerReducer'
 
 async function update(state, actionType) {
     const reducer = actionType.split('/')[0]
     const newData = state[reducer];
-    const response = await fetch('/api/update', {
+    const roomID = window.location.pathname.replace("/rooms/", "")
+    const response = await fetch('/api/update/' + roomID, {
         method: 'POST',
         cache: 'no-cache',
         headers: {
